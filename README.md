@@ -1,3 +1,3 @@
 
-# Twitter StatsD Metrics
+# Twitter Stream Metrics
 
