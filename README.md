@@ -34,9 +34,11 @@ The jar provides 2 different command line tools.
 ### Tracking Follower Counts
 
 Usage:
+
 `java -jar twitterstatsd-1.0-SNAPSHOT.jar <StatsD server address> <StatsD server port> <Comma separated list of twitter handles>` 
 
 Example:
+
 `java -jar twitterstatsd-1.0-SNAPSHOT.jar localhost 8125 askplaystation,xboxsupport`
 
 #### Output 
@@ -44,3 +46,25 @@ Every 60 seconds, it will poll the Twitter APIs and update a gauge containing th
 
 The metric name format is: `twitter.user.<twitter handle>.followerCount`
 
+### Tracking Mentions and Sentiment
+Usage:
+
+`java -cp twitterstatsd-1.0-SNAPSHOT.jar com.wavefront.TwitterMentionsCounter <StatsD server address> <StatsD server port> <Comma separated list of search terms>`
+
+Example:
+
+`java -cp twitterstatsd-1.0-SNAPSHOT.jar com.wavefront.TwitterMentionsCounter localhost 8125 @askplaystation,@xboxsupport`
+
+The search terms are sent as separate tracks to the Twitter streaming API. See https://dev.twitter.com/streaming/overview/request-parameters#track for more information. Search terms can be user IDs (starting with "@") or regular search terms.
+
+#### Output
+
+As matching tweets flow through the streaming API, gauges are generated and incremented for each track:
+
+The format is: 
+- `twitter.<track>.mentions.positive`
+- `twitter.<track>.mentions.negative`
+- `twitter.<track>.mentions.neutral`
+- `twitter.<track>.mentions.total`
+
+If the track is a user ID, `<track>` will be replaced with `user.<user ID>`.
