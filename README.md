@@ -1,7 +1,7 @@
 
 # Twitter Stream Metrics
 
-A set of tools for collecting metrics from Twitter's APIs.
+A set of tools for collecting metrics from Twitter's APIs. This code was used to help create the blog post at https://blogs.wavefront.com/2016/02/13/detecting-service-issues-from-twitter-with-wavefront/.
 
 ## Requirements
 
@@ -68,3 +68,14 @@ The format is:
 - `twitter.<track>.mentions.total`
 
 If the track is a user ID, `<track>` will be replaced with `user.<user ID>`.
+
+### Querying in Wavefront
+
+There are multiple ways you could represent the data in a chart. For the blog post, the rate of negative tweets was subtracted from the rate of positive tweets. A moving average was used to _smooth_ the data. For example:
+ 
+ ```
+ mavg(10m,rate(ts("stats.gauges.twitter.user.askplaystation.mentions.positive"))
+  - rate(ts("stats.gauges.twitter.user.askplaystation.mentions.negative")))
+ ```
+ 
+
